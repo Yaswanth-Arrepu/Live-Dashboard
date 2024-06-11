@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        .btn:hover {background-color: #3e8e41}
+        .btn:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+        .btn.edit {background-color: #f0ad4e;}
+        .btn.delete {background-color: #d9534f;}
+        .btn.arrow {background-color: #5bc0de;}
+        .btn.graph {background-color: #337ab7;}
+        .btn.logout {background-color: #f44336;}
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Departments</h1>
+    <table>
+        <tr>
+            <th>Department ID</th>
+            <th>Department Name</th>
+            <th>Actions</th>
+        </tr>
+        {% for department in departments %}
+        <tr>
+            <td>{{ department[0] }}</td>
+            <td>{{ department[1] }}</td>
+            <td>
+                <a href="{{ url_for('edit_department', department_id=department[0]) }}" class="btn edit">✏️</a>
+                <form action="{{ url_for('delete_department', department_id=department[0]) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn delete">🗑️</button>
+                </form>
+                <a href="{{ url_for('department_page', department_id=department[0]) }}" class="btn arrow">➡️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div style="text-align:center;">
+        <a href="{{ url_for('add_department') }}" class="btn">Add Department</a>
+        <a href="{{ url_for('graphs') }}" class="btn graph">Graphs</a>
+        <a href="{{ url_for('logout') }}" class="btn logout">Logout</a>
+    </div>
+</body>
+</html>
