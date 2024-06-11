@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ department_name }} Production</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        canvas {
+            margin: 20px auto;
+        }
+        .table-container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .form-container {
+            margin: 20px auto;
+            max-width: 400px;
+        }
+        input[type="date"], input[type="number"] {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .back-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Last 7 Days Production for {{ department_name }}</h1>
+    {% if dates and production_values %}
+        <canvas id="productionChart" width="400" height="200"></canvas>
+        <script>
+            var ctx = document.getElementById('productionChart').getContext('2d');
+            var productionChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ dates|tojson }},
+                    datasets: [{
+                        label: 'Production',
+                        data: {{ production_values|tojson }},
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+    {% else %}
+        <p>No production data available for this department. Please enter the production values below:</p>
+    {% endif %}
+    <div class="form-container">
+        <form method="post" action="{{ url_for('department_page', department_id=department_id) }}">
+            <input type="date" name="date" required>
+            <input type="number" name="production" required>
+            <button type="submit">Add Production</button>
+        </form>
+    </div>
+    <div class="table-container">
+        <h2>Production Data</h2>
+        <table>
+            <caption>Production Data (Measured in tons)</caption>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Produced Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for date, quantity in production_data %}
+                    <tr>
+                        <td>{{ date }}</td>
+                        <td>{{ quantity }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ url_for('main_page') }}" class="back-button">Back to Menu</a>
+</body>
+</html>

@@ -2,15 +2,15 @@
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
-  <title>Login Form Design | CodeLab</title>
+  <title>Signup Form Design | CodeLab</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <div class="wrapper">
     <div class="title">
-      Login Form
+      Signup Form
     </div>
-    <form action="{{ url_for('login') }}" method="POST">
+    <form action="{{ url_for('signup') }}" method="POST">
       <div class="field">
         <input type="text" name="email" required>
         <label>Email Address</label>
@@ -19,22 +19,23 @@
         <input type="password" name="password" required>
         <label>Password</label>
       </div>
-      <br>
-      <div class="content">
-        <div class="checkbox">
-          <input type="checkbox" id="remember-me">
-          <label for="remember-me">Remember me</label>
-        </div>
-        <br>
-        <div class="pass-link">
-          <a href="{{ url_for('forget_password') }}">Forgot password?</a>
-        </div>
+      <div class="field">
+        <input type="password" name="confirm_password" required>
+        <label>Confirm Password</label>
       </div>
       <div class="field">
-        <input type="submit" value="Login">
+        <input type="text" name="gender" required>
+        <label>Gender</label>
+      </div>
+      <div class="field">
+        <input type="text" name="phone_number" required>
+        <label>Phone Number</label>
+      </div>
+      <div class="field">
+        <input type="submit" value="Signup">
       </div>
       <div class="signup-link">
-        Not a member? <a href="{{ url_for('signup') }}">Signup now</a>
+        Already a member? <a href="{{ url_for('index') }}">Login now</a>
       </div>
     </form>
   </div>
